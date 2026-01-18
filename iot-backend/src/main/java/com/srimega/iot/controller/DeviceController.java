@@ -1,25 +1,40 @@
 package com.srimega.iot.controller;
 
-import com.srimega.iot.entity.Device;
-import com.srimega.iot.repository.DeviceRepository;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.srimega.iot.dto.*;
+import com.srimega.iot.service.DeviceService;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/devices")
+@RequiredArgsConstructor
 public class DeviceController {
 
-    private final DeviceRepository repository;
-
-    public DeviceController(DeviceRepository repository) {
-        this.repository = repository;
-    }
+    private final DeviceService deviceService;
 
     @PostMapping
-    public Device register(@RequestBody Device device) {
-        return repository.save(device);
+    public DeviceResponse register(@Valid @RequestBody DeviceRequest request) {
+        return deviceService.register(request);
+    }
+
+    @GetMapping
+    public Page<DeviceResponse> getDevices(Pageable pageable) {
+        return deviceService.getDevices(pageable);
+    }
+
+    @GetMapping("/{id}")
+    public DeviceResponse getById(@PathVariable Long id) {
+        return deviceService.getById(id);
+    }
+
+    @GetMapping("/dashboard/{deviceId}")
+    public DeviceDashboardResponse dashboard(@PathVariable String deviceId) {
+        return deviceService.getDashboard(deviceId);
     }
 }
 

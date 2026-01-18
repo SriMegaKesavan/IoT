@@ -1,43 +1,18 @@
 package com.srimega.iot.service;
 
+import com.srimega.iot.dto.DeviceDashboardResponse;
 import com.srimega.iot.dto.DeviceRequest;
 import com.srimega.iot.dto.DeviceResponse;
-import com.srimega.iot.entity.Device;
-import com.srimega.iot.repository.DeviceRepository;
-import org.springframework.stereotype.Service;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
-@Service
-public class DeviceService {
+import java.util.List;
 
-    private final DeviceRepository deviceRepository;
-
-    public DeviceService(DeviceRepository deviceRepository) {
-        this.deviceRepository = deviceRepository;
-    }
-
-    public DeviceResponse registerDevice(DeviceRequest request) {
-
-        deviceRepository.findByDeviceId(request.getDeviceId())
-                .ifPresent(d -> {
-                    throw new RuntimeException("Device already exists");
-                });
-
-        Device device = Device.builder()
-                .deviceId(request.getDeviceId())
-                .name(request.getName())
-                .location(request.getLocation())
-                .status(request.getStatus())
-                .build();
-
-        Device saved = deviceRepository.save(device);
-
-        return DeviceResponse.builder()
-                .id(saved.getId())
-                .deviceId(saved.getDeviceId())
-                .name(saved.getName())
-                .location(saved.getLocation())
-                .status(saved.getStatus())
-                .createdAt(saved.getCreatedAt())
-                .build();
-    }
+public interface DeviceService {
+    DeviceResponse register(DeviceRequest request);
+    List<DeviceResponse> getAll();
+    DeviceResponse getById(Long id);
+    DeviceResponse updateStatus(DeviceRequest request);
+    DeviceDashboardResponse getDashboard(String deviceId);
+    Page<DeviceResponse> getDevices(Pageable pageable);
 }

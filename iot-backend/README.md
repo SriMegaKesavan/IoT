@@ -59,6 +59,15 @@ Docker Compose
 
 CI/CD pipeline
 
+## Features
+- Device registration
+- Fetch all devices
+- Fetch device by ID
+- Input validation
+- Global exception handling
+- Health & DB monitoring
+- Swagger API documentation
+
 👤 Author
 Sri Mega Kesavan
 Backend Java Developer
