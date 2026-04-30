@@ -1,6 +1,17 @@
 server:
   port: 8080
 
+logging:
+  level:
+    "[org.springframework.security]": WARN
+    "[com.srimega.iot.config]": WARN
+    "[com.srimega.iot.ai]": DEBUG
+    "[org.springframework.web.client]": DEBUG
+
+ollama:
+  base-url: http://localhost:11434
+  model: phi3
+
 spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/iot_db
@@ -8,9 +19,7 @@ spring:
     password: postgres
 
   jpa:
-    hibernate:
-      ddl-auto: update
-    show-sql: true
+    open-in-view: false
     properties:
       hibernate:
         format_sql: true
@@ -27,9 +36,10 @@ management:
     web:
       exposure:
         include: health
-    endpoint:
-      health:
-        show-details: always
+
+  endpoint:
+    health:
+      show-details: always
 
 mqtt:
   broker: tcp://localhost:1883

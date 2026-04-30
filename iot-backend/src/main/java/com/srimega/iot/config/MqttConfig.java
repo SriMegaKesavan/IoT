@@ -19,8 +19,8 @@ public class MqttConfig {
     @Bean
     public MqttClient mqttClient() throws Exception {
         MqttClient client = new MqttClient(
-                "tcp://127.0.0.1:1883",
-                MqttClient.generateClientId()
+            "tcp://host.docker.internal:1883",
+            MqttClient.generateClientId()
         );
 
         MqttConnectOptions options = new MqttConnectOptions();
